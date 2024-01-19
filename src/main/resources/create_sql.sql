@@ -2,6 +2,7 @@
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255),
+    password VARCHAR(255),
     ip_addr VARCHAR(255),
     token VARCHAR(255),
     created_at DATETIME,
@@ -18,14 +19,14 @@ CREATE TABLE messages (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Trigger update_user_sended_at
+-- Trigger update_user_created_at
 DELIMITER //
-CREATE OR REPLACE TRIGGER update_message_sended_at
+CREATE OR REPLACE TRIGGER update_user_created_at
     AFTER INSERT ON users
     FOR EACH ROW
 BEGIN
     UPDATE users
-    SET sended_at = NOW()
+    SET created_at = NOW()
     WHERE id = NEW.id;
 END;
 //
@@ -33,7 +34,7 @@ DELIMITER ;
 
 -- Trigger update_user_updated_at
 DELIMITER //
-CREATE OR REPLACE TRIGGER update_message_sended_at
+CREATE OR REPLACE TRIGGER update_user_updated_at
     AFTER UPDATE ON users
     FOR EACH ROW
 BEGIN
@@ -59,7 +60,7 @@ DELIMITER ;
 
 -- Trigger update_message_updated_at
 DELIMITER //
-CREATE OR REPLACE TRIGGER update_message_sended_at
+CREATE OR REPLACE TRIGGER update_message_updated_at
     AFTER UPDATE ON messages
     FOR EACH ROW
 BEGIN

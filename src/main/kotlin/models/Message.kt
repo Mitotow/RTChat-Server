@@ -6,5 +6,6 @@ data class Message(
     val id: Int?,
     val content: String,
     val user_id: Int,
-    val sended_at: Date
+    val sended_at: Date?,
+    val updated_at: Date?,
 )
