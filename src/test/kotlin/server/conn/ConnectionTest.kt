@@ -1,6 +1,6 @@
 package server.conn
 
-import ClientServerTest
+import support.ClientServerTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals

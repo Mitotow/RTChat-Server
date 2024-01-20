@@ -1,6 +1,6 @@
 package database
 
-import DbTest
+import support.DbTest
 import dao.DbUsers
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

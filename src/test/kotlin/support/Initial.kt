@@ -1,3 +1,6 @@
+package support
+
+import Conf
 import org.junit.jupiter.api.BeforeAll
 
 class Initial {

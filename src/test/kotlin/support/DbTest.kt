@@ -1,3 +1,5 @@
+package support
+
 import dao.DbContext
 import org.junit.jupiter.api.AfterAll
 

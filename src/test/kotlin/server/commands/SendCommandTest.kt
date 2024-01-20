@@ -1,11 +1,8 @@
 package server.commands
 
-import ClientServerTest
-import DbTest
+import support.ClientServerTest
 import dao.DbMessages
 import dao.DbUsers
-import models.Message
-import models.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
