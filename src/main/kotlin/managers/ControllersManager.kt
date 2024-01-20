@@ -10,23 +10,24 @@ class ControllersManager {
 
         private fun loadControllers(): Map<String, Controller> {
             val controllersMap = mutableMapOf<String, Controller>()
-            val controllersPackage = "controllers"  // Remplacez par le nom de votre package
+            val controllersPackage = "controllers"
 
-            val controllersFolder = File("src/main/kotlin/$controllersPackage")
-            val controllerFiles = controllersFolder.listFiles { file ->
+
+            // Retrieve controllers and register each controller with its command name
+            File("src/main/kotlin/$controllersPackage").listFiles { file ->
                 file.isFile && file.name.endsWith("Controller.kt") && file.name != "Controller.kt"
-            }
-
-            controllerFiles?.forEach { file ->
-                val className = "${controllersPackage}.${file.nameWithoutExtension}"
+            }?.forEach { file ->
                 try {
-                    val controllerClass = Class.forName(className)
+                    val controllerClass = Class.forName("${controllersPackage}.${file.nameWithoutExtension}")
                     if (Controller::class.java.isAssignableFrom(controllerClass) &&
-                        !Modifier.isAbstract(controllerClass.modifiers)
-                    ) {
+                        !Modifier.isAbstract(controllerClass.modifiers)) {
+
+                        // Retrieve controller constructor and create an instance of the controller
                         val constructor = controllerClass.getDeclaredConstructor()
                         constructor.isAccessible = true
                         val controllerInstance = constructor.newInstance() as Controller
+
+                        // Register as key the command name and as value the controller instance
                         controllersMap[controllerInstance.cmd] = controllerInstance
                     }
                 } catch (e: ClassNotFoundException) {
