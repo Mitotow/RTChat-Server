@@ -27,9 +27,9 @@ CREATE OR REPLACE TRIGGER update_user_created_at
     BEFORE INSERT ON users
     FOR EACH ROW
 BEGIN
-    UPDATE users
-    SET NEW.created_at = NOW()
-    WHERE id = NEW.id;
+    IF NEW.created_at IS NULL THEN
+        SET NEW.created_at = NOW();
+    END IF;
 END
 //
 DELIMITER ;
@@ -40,9 +40,9 @@ CREATE OR REPLACE TRIGGER update_user_updated_at
     BEFORE UPDATE ON users
     FOR EACH ROW
 BEGIN
-    UPDATE users
-    SET NEW.updated_at = NOW()
-    WHERE id = NEW.id;
+    IF NEW.updated_at IS NULL THEN
+        SET NEW.updated_at = NOW();
+    END IF;
 END
 //
 DELIMITER ;
@@ -53,9 +53,9 @@ CREATE OR REPLACE TRIGGER update_message_sended_at
     BEFORE INSERT ON messages
     FOR EACH ROW
 BEGIN
-    UPDATE messages
-    SET NEW.created_at = NOW()
-    WHERE id = NEW.id;
+    IF NEW.created_at IS NULL THEN
+        SET NEW.created_at = NOW();
+    END IF;
 END
 //
 DELIMITER ;
@@ -66,9 +66,9 @@ CREATE OR REPLACE TRIGGER update_message_updated_at
     BEFORE UPDATE ON messages
     FOR EACH ROW
 BEGIN
-    UPDATE messages
-    SET NEW.updated_at = NOW()
-    WHERE id = NEW.id;
+    IF NEW.updated_at IS NULL THEN
+        SET NEW.updated_at = NOW();
+    END IF;
 END
 //
 DELIMITER ;
@@ -97,12 +97,4 @@ BEGIN
     WHERE user_id=target_id;
 END
 //
-DELIMITER ;
-
--- Procedure to insert a userDELIMITER //
-CREATE PROCEDURE InsertUser(IN p_username VARCHAR(255), IN p_addr VARCHAR(255), IN p_token VARCHAR(255), OUT p_generated_id INT)
-BEGIN
-    INSERT INTO users (username, ip_addr, token) VALUES (p_username, p_addr, p_token);
-    SET p_generated_id = LAST_INSERT_ID();
-END //
 DELIMITER ;
