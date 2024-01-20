@@ -5,7 +5,7 @@ class Initial {
         @JvmStatic
         @BeforeAll
         fun setDbTestMod() {
-
+            Conf.getConfig().setBool("DB_TEST_MOD", true)
         }
     }
 }

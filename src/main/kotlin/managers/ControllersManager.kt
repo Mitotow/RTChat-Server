@@ -14,7 +14,7 @@ class ControllersManager {
 
             val controllersFolder = File("src/main/kotlin/$controllersPackage")
             val controllerFiles = controllersFolder.listFiles { file ->
-                file.isFile && file.name.endsWith("Controller.kt")
+                file.isFile && file.name.endsWith("Controller.kt") && file.name != "Controller.kt"
             }
 
             controllerFiles?.forEach { file ->

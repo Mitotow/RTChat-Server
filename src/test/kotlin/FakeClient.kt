@@ -3,9 +3,7 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class FakeClient {
-    private val addr = Conf.getConfig().get("addr")
-    private val port = Conf.getConfig().getInt("port")
+class FakeClient(private val addr : String, private val port : Int) {
     private var sock : Socket? = null
     private var writer: PrintWriter? = null
     private var reader: BufferedReader? = null
@@ -24,7 +22,6 @@ class FakeClient {
     fun write(vararg str:String) {
         val msg = str.joinToString(" ")
         writer!!.println(msg)
-        println("[CLIENT] : Message \"$msg\" sent")
     }
 
     fun read(): String = reader!!.readLine()

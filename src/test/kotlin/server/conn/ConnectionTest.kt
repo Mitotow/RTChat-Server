@@ -1,11 +1,11 @@
 package server.conn
 
-import ClientServerConfigTest
+import ClientServerTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 
-class ConnectionConfigTest: ClientServerConfigTest() {
+class ConnectionTest: ClientServerTest() {
     @Test
     fun clientConnectToServerTest() {
         assertDoesNotThrow {

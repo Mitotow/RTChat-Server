@@ -130,5 +130,17 @@ class DbMessages {
                 return null
             }
         }
+
+        /**
+         * Retrieve messages by a provided author ID.
+         *
+         * @param userId - The ID of the author of the messages.
+         * @return An ArrayList of messages.
+         */
+        fun findAuthor(userId: Int): ArrayList<Message> {
+            val preparedStatement = DbContext.getConn().prepareStatement("SELECT * FROM messages WHERE user_id=?")
+            preparedStatement.setInt(1, userId)
+            return convert(preparedStatement.executeQuery())
+        }
     }
 }

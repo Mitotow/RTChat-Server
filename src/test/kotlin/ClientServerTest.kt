@@ -2,7 +2,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertDoesNotThrow
 
-open class ClientServerConfigTest(private val autoConn : Boolean = false): ConfigTest() {
+open class ClientServerTest(private val autoConn : Boolean = false): DbTest() {
     protected var server: Server?  = null
     protected var client: FakeClient? = null
 

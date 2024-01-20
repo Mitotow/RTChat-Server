@@ -1,52 +1,73 @@
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.PrintWriter
+import io.github.oshai.kotlinlogging.KotlinLogging
+import managers.ControllersManager
+import models.Client
 import java.net.ServerSocket
-import java.net.Socket
 
 class Server {
     // Default value to dev only (has to be moved in a config file)
-    private val port = Conf.getConfig().getInt("port")
+    private val port = Conf.getConfig().getInt("PORT")
 
     // Socket declaration
     private val socket = ServerSocket(port)
+
+    // Logger
+    private val logger = KotlinLogging.logger {}
+
+    // Connected clients
+    private val clients = hashSetOf<Client>()
+
     init {
-        println("Server connected on port : ${socket.localPort}")
+        logger.info { "Server listening on port $port." }
     }
 
     /*
     * Used to accept connection from a client
     */
     fun accept() {
+        // Create a client object that will be added to the connected clients HashSet
         val sock = socket.accept()
-        println("client connected with address ${sock.remoteSocketAddress}")
-        Thread { handleClient(sock) }.start()
-    }
+        val client = Client(sock)
+        clients.add(client)
+        logger.debug { "Client connected, address ${sock.remoteSocketAddress}." }
 
-    /**
-     * Used to disconnect a client
-     */
-    fun disconnect(sock: Socket) {
-        println("client disconnected with address ${sock.remoteSocketAddress}")
-        sock.close()
+        // Start a new thread to handle the client connection asynchronously.
+        Thread { handleClient(client) }.start()
     }
 
     fun stop() {
         socket.close()
     }
 
+    fun broadcast(vararg args : String) {
+        clients.forEach {
+            it.write(args.joinToString(";"))
+        }
+    }
+
+    /**
+     * Used to disconnect a client
+     */
+    private fun disconnect(client: Client) {
+        // Remove client from the connected clients HashSet and close the connection
+        clients.remove(client)
+        logger.debug { "Client disconnected, address ${client.sock.remoteSocketAddress}." }
+        client.sock.close()
+    }
+
     /**
      * Used to treat client's requests
      */
-    private fun handleClient(sock:Socket) {
-        val reader = BufferedReader(InputStreamReader(sock.getInputStream()))
-        val writer = PrintWriter(sock.getOutputStream(), true)
-        while(sock.isConnected) {
-            val read = reader.readLine()
-            if (read == "ping") {
-                writer.println("pong")
+    private fun handleClient(client: Client) {
+        while(client.sock.isConnected) {
+            val read = client.reader.readLine()
+            if(read != null) {
+                // Avoid NullPointerException when the end of stream has been reached
+                val args = read.split(";")
+
+                // Find the controller corresponding to the command and execute the associated function.
+                ControllersManager.controllers[args[0]]?.execute(this, client, args)
             }
         }
-        disconnect(sock)
+        disconnect(client)
     }
 }
