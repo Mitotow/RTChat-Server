@@ -4,10 +4,12 @@ import support.ClientServerTest
 import dao.DbMessages
 import dao.DbUsers
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class SendCommandTest: ClientServerTest(true) {
     @Test
     fun sendSimpleMessageTest() {

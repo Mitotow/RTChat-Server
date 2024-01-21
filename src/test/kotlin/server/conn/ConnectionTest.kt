@@ -2,9 +2,11 @@ package server.conn
 
 import support.ClientServerTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConnectionTest: ClientServerTest() {
     @Test
     fun clientConnectToServerTest() {

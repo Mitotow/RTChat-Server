@@ -4,10 +4,6 @@ class Conf {
     private val properties = Properties()
 
     init {
-        refresh()
-    }
-
-    private fun refresh() {
         try {
             properties.load(javaClass.getResourceAsStream("/config.properties"))
         } catch(e: Exception) {
@@ -23,7 +19,6 @@ class Conf {
 
     fun set(prop:String, value:String) {
         properties.setProperty(prop, value)
-        refresh()
     }
 
     fun setBool(prop:String, value:Boolean) = set(prop, value.toString())
